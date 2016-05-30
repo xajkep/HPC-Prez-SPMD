@@ -130,8 +130,39 @@ On 10 runs we have obtained a average of performance gain of *862.1%* compared t
 
 ![](images/mandelbrot-ispc.png)
 
+#### Analysis
 
-## Liens
+This example is composed of C++ source file and ISCP source file. The C++ is used to set a number of variables for the algorithm and allocate memory to store the result.
+
+The mandelbrot function (*mandelbrot_ispc*) directly takes parameters passed by the C++ code as a regular function.
+
+In mandelbrot.ispc:
+~~~c
+export void mandelbrot_ispc(uniform float x0, uniform float y0,
+                            uniform float x1, uniform float y1,
+                            uniform int width, uniform int height,
+                            uniform int maxIterations,
+                            uniform int output[])
+~~~
+The export qualifier indicates that this function should be  made available to be called by C/C++ code, not just from other ispc functions.
+
+The **uniform** is a new keyword introduced by ISPC, it's for scalar value (one element).
+The other keywords introduced is **varying**, it's for vector value (multiple elements).
+
+Always in mandelbrot.ispc:
+~~~c
+for (uniform int j = 0; j < height; j++) {
+  foreach (i = 0 ... width) { ... }
+}
+~~~
+There is two loops. The outer loop is a regular loop, but the inner loop introduces a new looping construct provided by ISPC. This foreach specifies parellel iteration over a n-dimensional range of integer value.
+
+In this case, the parallele iteration is over a 1-dimension range of pixels.
+
+For example, if the code is generated to run 8-wide parallel fashion for an 8-wide AVX SIMD unit, it would have the value (0,1,2,3,4,5,6,7) in the executing program instance for the first time, then (8,9,10,11,12,13,14,15) the second time, etc.
+
+
+## Links
 
 * [http://ispc.github.io/]()
 * [https://github.com/ispc/ispc/]()
