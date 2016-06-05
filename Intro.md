@@ -1,4 +1,4 @@
-### Intro
+### Introduction
 
 ISPC is a LLVM-based language and compiler that provides a SPMD programming
 model for Intel SIMD architectures.
@@ -41,11 +41,11 @@ in C.
 
 ISPC basic build path diagram :
 
-![ISPC build](/img/ISPC_build.png)
+![ISPC build](images/ISPC_build.png)
 
 ISPC alternative build path diagram :
 
-![ISPC build](/img/ISPC_build2.png)
+![ISPC build](images/ISPC_build2.png)
 
 Upon entry to a ispc function called from C/C++ code,
 the execution model switches from the application’s serial
